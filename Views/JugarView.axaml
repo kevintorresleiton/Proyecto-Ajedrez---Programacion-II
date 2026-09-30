@@ -5,94 +5,69 @@
              x:DataType="vm:JugarViewModel">
 
     <Grid RowDefinitions="Auto,*">
+        <!-- Header -->
         <Border Grid.Row="0" Background="#0F172A" Padding="20,15">
             <Grid ColumnDefinitions="Auto,*,Auto">
                 <Button Grid.Column="0" Content="← Volver al Menú" Command="{Binding VolverMenuCommand}" Background="#334155" Foreground="White" CornerRadius="6" Padding="10,6" Cursor="Hand"/>
-                <TextBlock Grid.Column="1" Text="♟️ Mesa de Juego - Ajedrez" FontSize="20" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <TextBlock Grid.Column="1" Text="♟️ Mesa de Juego - Ajedrez (Motor ChessDotNet)" FontSize="20" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </Grid>
         </Border>
 
         <Border Grid.Row="1" Padding="20">
             <Grid ColumnDefinitions="*,300">
+                <!-- Tablero Interactivo 8x8 Enlazado a ChessDotNet -->
                 <Border Grid.Column="0" Background="#0F172A" CornerRadius="12" Padding="15" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <UniformGrid Rows="8" Columns="8" Width="480" Height="480">
-                        <!-- Fila 8 -->
-                        <Border Background="#F0D9B5"><TextBlock Text="♜" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#1E293B"/></Border>
-                        <Border Background="#B58863"><TextBlock Text="♞" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#1E293B"/></Border>
-                        <Border Background="#F0D9B5"><TextBlock Text="♝" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#1E293B"/></Border>
-                        <Border Background="#B58863"><TextBlock Text="♛" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#1E293B"/></Border>
-                        <Border Background="#F0D9B5"><TextBlock Text="♚" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#1E293B"/></Border>
-                        <Border Background="#B58863"><TextBlock Text="♝" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#1E293B"/></Border>
-                        <Border Background="#F0D9B5"><TextBlock Text="♞" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#1E293B"/></Border>
-                        <Border Background="#B58863"><TextBlock Text="♜" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#1E293B"/></Border>
-
-                        <!-- Peones Negros -->
-                        <Border Background="#B58863"><TextBlock Text="♟" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#1E293B"/></Border>
-                        <Border Background="#F0D9B5"><TextBlock Text="♟" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#1E293B"/></Border>
-                        <Border Background="#B58863"><TextBlock Text="♟" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#1E293B"/></Border>
-                        <Border Background="#F0D9B5"><TextBlock Text="♟" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#1E293B"/></Border>
-                        <Border Background="#B58863"><TextBlock Text="♟" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#1E293B"/></Border>
-                        <Border Background="#F0D9B5"><TextBlock Text="♟" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#1E293B"/></Border>
-                        <Border Background="#B58863"><TextBlock Text="♟" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#1E293B"/></Border>
-                        <Border Background="#F0D9B5"><TextBlock Text="♟" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#1E293B"/></Border>
-
-                        <!-- Espacios Vacíos -->
-                        <Border Background="#F0D9B5"/><Border Background="#B58863"/><Border Background="#F0D9B5"/><Border Background="#B58863"/><Border Background="#F0D9B5"/><Border Background="#B58863"/><Border Background="#F0D9B5"/><Border Background="#B58863"/>
-                        <Border Background="#B58863"/><Border Background="#F0D9B5"/><Border Background="#B58863"/><Border Background="#F0D9B5"/><Border Background="#B58863"/><Border Background="#F0D9B5"/><Border Background="#B58863"/><Border Background="#F0D9B5"/>
-                        <Border Background="#F0D9B5"/><Border Background="#B58863"/><Border Background="#F0D9B5"/><Border Background="#B58863"/><Border Background="#F0D9B5"/><Border Background="#B58863"/><Border Background="#F0D9B5"/><Border Background="#B58863"/>
-                        <Border Background="#B58863"/><Border Background="#F0D9B5"/><Border Background="#B58863"/><Border Background="#F0D9B5"/><Border Background="#B58863"/><Border Background="#F0D9B5"/><Border Background="#B58863"/><Border Background="#F0D9B5"/>
-
-                        <!-- Peones Blancos -->
-                        <Border Background="#F0D9B5"><TextBlock Text="♙" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#38BDF8"/></Border>
-                        <Border Background="#B58863"><TextBlock Text="♙" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#38BDF8"/></Border>
-                        <Border Background="#F0D9B5"><TextBlock Text="♙" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#38BDF8"/></Border>
-                        <Border Background="#B58863"><TextBlock Text="♙" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#38BDF8"/></Border>
-                        <Border Background="#F0D9B5"><TextBlock Text="♙" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#38BDF8"/></Border>
-                        <Border Background="#B58863"><TextBlock Text="♙" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#38BDF8"/></Border>
-                        <Border Background="#F0D9B5"><TextBlock Text="♙" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#38BDF8"/></Border>
-                        <Border Background="#B58863"><TextBlock Text="♙" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#38BDF8"/></Border>
-
-                        <!-- Fila 1 -->
-                        <Border Background="#B58863"><TextBlock Text="♖" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#38BDF8"/></Border>
-                        <Border Background="#F0D9B5"><TextBlock Text="♘" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#38BDF8"/></Border>
-                        <Border Background="#B58863"><TextBlock Text="♗" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#38BDF8"/></Border>
-                        <Border Background="#F0D9B5"><TextBlock Text="♕" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#38BDF8"/></Border>
-                        <Border Background="#B58863"><TextBlock Text="♔" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#38BDF8"/></Border>
-                        <Border Background="#F0D9B5"><TextBlock Text="♗" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#38BDF8"/></Border>
-                        <Border Background="#B58863"><TextBlock Text="♘" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#38BDF8"/></Border>
-                        <Border Background="#F0D9B5"><TextBlock Text="♖" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#38BDF8"/></Border>
-                    </UniformGrid>
+                    <ItemsControl ItemsSource="{Binding Tablero}" Width="480" Height="480">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Rows="8" Columns="8"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Command="{Binding $parent[UserControl].((vm:JugarViewModel)DataContext).SeleccionarCasillaCommand}"
+                                        CommandParameter="{Binding}"
+                                        Background="{Binding ColorFondo}"
+                                        Padding="0" CornerRadius="0"
+                                        HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                        HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                        Cursor="Hand">
+                                    <TextBlock Text="{Binding Pieza}" FontSize="36" Foreground="#1E293B"/>
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
                 </Border>
 
-                <!-- Panel Lateral -->
+                <!-- Panel Lateral de Reloj y Estado del Juego -->
                 <Border Grid.Column="1" Background="#1E293B" CornerRadius="12" Padding="20" Margin="15,0,0,0">
-                    <StackPanel Spacing="20">
-                        <TextBlock Text="Reloj de Ajedrez" FontSize="18" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"/>
+                    <StackPanel Spacing="16">
+                        <TextBlock Text="Reloj y Estado" FontSize="18" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"/>
 
-                        <Border Background="#0F172A" Padding="15" CornerRadius="8">
+                        <Border Background="#0F172A" Padding="12" CornerRadius="8">
                             <StackPanel HorizontalAlignment="Center">
-                                <TextBlock Text="Jugador Negras" Foreground="#94A3B8" FontSize="12" HorizontalAlignment="Center"/>
-                                <TextBlock Text="{Binding TiempoNegras}" FontSize="32" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"/>
+                                <TextBlock Text="Jugador Negras" Foreground="#94A3B8" FontSize="11" HorizontalAlignment="Center"/>
+                                <TextBlock Text="{Binding TiempoNegras}" FontSize="28" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"/>
                             </StackPanel>
                         </Border>
 
                         <Border Background="#334155" Padding="10" CornerRadius="8">
-                            <StackPanel HorizontalAlignment="Center">
+                            <StackPanel HorizontalAlignment="Center" Spacing="4">
                                 <TextBlock Text="Turno Activo:" Foreground="#94A3B8" FontSize="11" HorizontalAlignment="Center"/>
                                 <TextBlock Text="{Binding TurnoActual}" FontSize="18" FontWeight="Bold" Foreground="#38BDF8" HorizontalAlignment="Center"/>
+                                <TextBlock Text="{Binding EstadoJuego}" FontSize="12" FontWeight="Bold" Foreground="#F59E0B" HorizontalAlignment="Center" TextWrapping="Wrap"/>
                             </StackPanel>
                         </Border>
 
-                        <Border Background="#0F172A" Padding="15" CornerRadius="8">
+                        <Border Background="#0F172A" Padding="12" CornerRadius="8">
                             <StackPanel HorizontalAlignment="Center">
-                                <TextBlock Text="Jugador Blancas" Foreground="#94A3B8" FontSize="12" HorizontalAlignment="Center"/>
-                                <TextBlock Text="{Binding TiempoBlancas}" FontSize="32" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"/>
+                                <TextBlock Text="Jugador Blancas" Foreground="#94A3B8" FontSize="11" HorizontalAlignment="Center"/>
+                                <TextBlock Text="{Binding TiempoBlancas}" FontSize="28" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"/>
                             </StackPanel>
                         </Border>
 
                         <Button Content="▶ / ⏸ Iniciar / Pausar" Command="{Binding IniciarPausarJuegoCommand}" Background="#2563EB" Foreground="White" FontWeight="Bold" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Padding="10" CornerRadius="6" Cursor="Hand"/>
-                        <Button Content="🔄 Cambiar Turno" Command="{Binding CambiarTurnoCommand}" Background="#10B981" Foreground="White" FontWeight="Bold" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Padding="10" CornerRadius="6" Cursor="Hand"/>
-                        <Button Content="⏹ Reiniciar Reloj" Command="{Binding ReiniciarPartidaCommand}" Background="#EF4444" Foreground="White" FontWeight="Bold" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Padding="10" CornerRadius="6" Cursor="Hand"/>
+                        <Button Content="⏹ Reiniciar Partida" Command="{Binding ReiniciarPartidaCommand}" Background="#EF4444" Foreground="White" FontWeight="Bold" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Padding="10" CornerRadius="6" Cursor="Hand"/>
                     </StackPanel>
                 </Border>
             </Grid>

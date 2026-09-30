@@ -1,0 +1,37 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:JaqueAndo.ViewModels"
+             x:Class="JaqueAndo.Views.LoginView"
+             x:DataType="vm:LoginViewModel">
+
+    <Grid>
+        <Image Source="avares://JaqueAndo/Assets/ajedrez8_login.jpg" Stretch="UniformToFill" Opacity="0.30"/>
+
+        <Border Background="#1E293B" CornerRadius="16" Width="380" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="35" BoxShadow="0 20 40 0 #A0000000">
+            <StackPanel Spacing="16">
+                <Image Source="avares://JaqueAndo/Assets/logoJaqueAndo.png" Width="80" Height="80" HorizontalAlignment="Center"/>
+
+                <TextBlock Text="JaqueAndo" FontSize="28" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"/>
+                <TextBlock Text="Inicia sesión para continuar" FontSize="13" Foreground="#94A3B8" HorizontalAlignment="Center"/>
+
+                <StackPanel Spacing="6" Margin="0,10,0,0">
+                    <TextBlock Text="Usuario:" Foreground="#E2E8F0" FontWeight="SemiBold"/>
+                    <TextBox Text="{Binding Username}" PlaceholderText="Ej: admin / jugador" Padding="10"/>
+                </StackPanel>
+
+                <StackPanel Spacing="6">
+                    <TextBlock Text="Contraseña:" Foreground="#E2E8F0" FontWeight="SemiBold"/>
+                    <TextBox Text="{Binding Password}" PasswordChar="*" PlaceholderText="Ingrese contraseña" Padding="10"/>
+                </StackPanel>
+
+                <Button Content="Ingresar al Sistema" Command="{Binding IniciarSesionCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Background="#2563EB" Foreground="White" Padding="12" CornerRadius="8" FontWeight="Bold" Cursor="Hand" Margin="0,10,0,0"/>
+
+                <TextBlock Text="{Binding ErrorMessage}" Foreground="#EF4444" HorizontalAlignment="Center" FontWeight="SemiBold" TextWrapping="Wrap" IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+
+                <Border Background="#0F172A" Padding="10" CornerRadius="6" Margin="0,10,0,0">
+                    <TextBlock Text="💡 Credenciales de prueba:&#10;• Admin: admin / 123&#10;• Jugador: jugador / 123" FontSize="11" Foreground="#64748B" HorizontalAlignment="Center"/>
+                </Border>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

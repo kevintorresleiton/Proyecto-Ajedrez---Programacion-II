@@ -1,0 +1,35 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:JaqueAndo.ViewModels"
+        xmlns:views="using:JaqueAndo.Views"
+        x:Class="JaqueAndo.MainWindow"
+        x:DataType="vm:MainViewModel"
+        Icon="avares://JaqueAndo/Assets/logoJaqueAndo.png"
+        Title="JaqueAndo - Sistema de Ajedrez"
+        Width="1100" Height="700"
+        WindowStartupLocation="CenterScreen">
+
+    <!-- Enrutador central mediante DataTemplates (Navegación MVVM) -->
+    <ContentControl Content="{Binding CurrentViewModel}">
+        <ContentControl.DataTemplates>
+            <DataTemplate DataType="{x:Type vm:LoginViewModel}">
+                <views:LoginView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:MenuPrincipalViewModel}">
+                <views:MenuPrincipalView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:JugarViewModel}">
+                <views:JugarView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:TriviaViewModel}">
+                <views:TriviaView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:BaseDatosViewModel}">
+                <views:BaseDatosView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:EventosApiViewModel}">
+                <views:EventosApiView/>
+            </DataTemplate>
+        </ContentControl.DataTemplates>
+    </ContentControl>
+</Window>

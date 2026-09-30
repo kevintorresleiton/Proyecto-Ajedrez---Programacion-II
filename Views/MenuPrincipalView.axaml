@@ -1,0 +1,94 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:JaqueAndo.ViewModels"
+             x:Class="JaqueAndo.Views.MenuPrincipalView"
+             x:DataType="vm:MenuPrincipalViewModel">
+
+    <Grid RowDefinitions="Auto,*">
+        <!-- Header -->
+        <Border Grid.Row="0" Background="#0F172A" Padding="20,15">
+            <Grid ColumnDefinitions="Auto,*,Auto">
+                <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="12" VerticalAlignment="Center">
+                    <Image Source="avares://JaqueAndo/Assets/logoJaqueAndo.png" Width="40" Height="40"/>
+                    <TextBlock Text="JaqueAndo" FontSize="22" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="15" VerticalAlignment="Center">
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="{Binding UsuarioActual.NombreCompleto}" Foreground="White" FontWeight="Bold" HorizontalAlignment="Right"/>
+                        <TextBlock Text="{Binding UsuarioActual.EsAdmin, StringFormat='Rol: {0}'}" Foreground="#94A3B8" FontSize="11" HorizontalAlignment="Right"/>
+                    </StackPanel>
+                    <Button Content="Cerrar Sesión" Command="{Binding CerrarSesionCommand}" Background="#EF4444" Foreground="White" FontWeight="SemiBold" CornerRadius="6" Padding="10,6" Cursor="Hand"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Contenido Principal -->
+        <ScrollViewer Grid.Row="1">
+            <Border Padding="30">
+                <StackPanel Spacing="25" MaxWidth="1000">
+                    <TextBlock Text="Selecciona un Módulo" FontSize="24" FontWeight="Bold" Foreground="White"/>
+
+                    <UniformGrid Columns="2" Rows="2">
+                        <!-- Tarjeta 1: Jugar -->
+                        <Button Command="{Binding IrAJugarCommand}" Background="#1E293B" CornerRadius="12" Margin="10" Padding="0" Cursor="Hand" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                            <Grid RowDefinitions="*,Auto">
+                                <Image Grid.Row="0" Source="avares://JaqueAndo/Assets/ajedrez5_jugar.jpg" Stretch="UniformToFill" Height="140"/>
+                                <Border Grid.Row="1" Padding="15">
+                                    <StackPanel>
+                                        <TextBlock Text="♟️ Jugar Ajedrez" FontSize="18" FontWeight="Bold" Foreground="White"/>
+                                        <TextBlock Text="Mesa de juego interactiva con tablero 8x8 y reloj." Foreground="#94A3B8" FontSize="12" TextWrapping="Wrap" Margin="0,4,0,0"/>
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+                        </Button>
+
+                        <!-- Tarjeta 2: Trivia -->
+                        <Button Command="{Binding IrATriviaCommand}" Background="#1E293B" CornerRadius="12" Margin="10" Padding="0" Cursor="Hand" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                            <Grid RowDefinitions="*,Auto">
+                                <Image Grid.Row="0" Source="avares://JaqueAndo/Assets/ajedrez9_trivia.jpg" Stretch="UniformToFill" Height="140"/>
+                                <Border Grid.Row="1" Padding="15">
+                                    <StackPanel>
+                                        <TextBlock Text="❓ Preguntados Ajedrecístico" FontSize="18" FontWeight="Bold" Foreground="White"/>
+                                        <TextBlock Text="Pon a prueba tus conocimientos con el cuestionario." Foreground="#94A3B8" FontSize="12" TextWrapping="Wrap" Margin="0,4,0,0"/>
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+                        </Button>
+
+                        <!-- Tarjeta 3: Base de Datos -->
+                        <Button Command="{Binding IrABaseDatosCommand}" IsEnabled="{Binding UsuarioActual.EsAdmin}" Background="#1E293B" CornerRadius="12" Margin="10" Padding="0" Cursor="Hand" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                            <Grid RowDefinitions="*,Auto">
+                                <Image Grid.Row="0" Source="avares://JaqueAndo/Assets/ajedrez7_basededatos.jpg" Stretch="UniformToFill" Height="140"/>
+                                <Border Grid.Row="1" Padding="15">
+                                    <StackPanel>
+                                        <StackPanel Orientation="Horizontal" Spacing="8">
+                                            <TextBlock Text="🗄️ Base de Datos" FontSize="18" FontWeight="Bold" Foreground="White"/>
+                                            <Border Background="#334155" Padding="6,2" CornerRadius="4" IsVisible="{Binding !UsuarioActual.EsAdmin}">
+                                                <TextBlock Text="Solo Admin" FontSize="10" Foreground="#F59E0B" FontWeight="Bold"/>
+                                            </Border>
+                                        </StackPanel>
+                                        <TextBlock Text="CRUD completo de jugadores desde SQLite." Foreground="#94A3B8" FontSize="12" TextWrapping="Wrap" Margin="0,4,0,0"/>
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+                        </Button>
+
+                        <!-- Tarjeta 4: Eventos API -->
+                        <Button Command="{Binding IrAEventosCommand}" Background="#1E293B" CornerRadius="12" Margin="10" Padding="0" Cursor="Hand" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                            <Grid RowDefinitions="*,Auto">
+                                <Image Grid.Row="0" Source="avares://JaqueAndo/Assets/ajedrez3_menuprincipal.jpg" Stretch="UniformToFill" Height="140"/>
+                                <Border Grid.Row="1" Padding="15">
+                                    <StackPanel>
+                                        <TextBlock Text="🌐 Consultas API REST" FontSize="18" FontWeight="Bold" Foreground="White"/>
+                                        <TextBlock Text="Torneos en vivo y métricas mundiales mediante Lichess." Foreground="#94A3B8" FontSize="12" TextWrapping="Wrap" Margin="0,4,0,0"/>
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+                        </Button>
+                    </UniformGrid>
+                </StackPanel>
+            </Border>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

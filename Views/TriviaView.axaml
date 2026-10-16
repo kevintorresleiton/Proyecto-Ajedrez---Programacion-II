@@ -2,53 +2,55 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:JaqueAndo.ViewModels"
              x:Class="JaqueAndo.Views.TriviaView"
-             x:DataType="vm:TriviaViewModel">
+             x:DataType="vm:TriviaViewModel"
+             Background="#0F172A">
 
     <Grid RowDefinitions="Auto,*">
         <!-- Header -->
-        <Border Grid.Row="0" Background="#0F172A" Padding="20,15">
+        <Border Grid.Row="0" Background="#1E293B" Padding="20,15">
             <Grid ColumnDefinitions="Auto,*,Auto">
                 <Button Grid.Column="0" Content="← Volver al Menú" Command="{Binding VolverMenuCommand}" Background="#334155" Foreground="White" CornerRadius="6" Padding="10,6" Cursor="Hand"/>
-                <TextBlock Grid.Column="1" Text="❓ Trivia Ajedrecística" FontSize="20" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <TextBlock Grid.Column="1" Text="{Binding TituloEncuesta}" FontSize="18" FontWeight="Bold" Foreground="#38BDF8" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </Grid>
         </Border>
 
-        <!-- Contenido de la Trivia -->
-        <Grid Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="600">
+        <!-- Contenido Central -->
+        <Grid Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="550">
 
             <!-- Panel de Pregunta Activa -->
-            <Border Background="#1E293B" CornerRadius="16" Padding="30" BoxShadow="0 10 30 0 #A0000000" IsVisible="{Binding !TriviaFinalizada}">
-                <StackPanel Spacing="20">
+            <Border Background="#1E293B" CornerRadius="12" Padding="25" IsVisible="{Binding MostrarPregunta}">
+                <StackPanel Spacing="15">
                     <Grid ColumnDefinitions="*,Auto">
-                        <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="10">
+                        <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="8">
                             <TextBlock Text="Puntaje:" Foreground="#94A3B8" FontSize="16"/>
-                            <TextBlock Text="{Binding Puntaje}" Foreground="#10B981" FontSize="18" FontWeight="Bold"/>
+                            <TextBlock Text="{Binding Puntaje}" Foreground="#10B981" FontSize="20" FontWeight="Bold"/>
                         </StackPanel>
-                        <Border Grid.Column="1" Background="#EF4444" Padding="12,6" CornerRadius="20">
+                        <Border Grid.Column="1" Background="#EF4444" Padding="10,4" CornerRadius="12">
                             <TextBlock Text="{Binding TiempoRestante, StringFormat='⏱️ {0}s'}" Foreground="White" FontWeight="Bold"/>
                         </Border>
                     </Grid>
 
                     <TextBlock Text="{Binding PreguntaActual.Enunciado}" FontSize="18" FontWeight="Bold" Foreground="White" TextWrapping="Wrap" Margin="0,10"/>
 
-                    <!-- Opciones de Respuesta -->
-                    <Button Content="{Binding PreguntaActual.OpcionA}" Command="{Binding ResponderCommand}" CommandParameter="1" Background="#334155" Foreground="White" Padding="12" CornerRadius="8" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Cursor="Hand"/>
-                    <Button Content="{Binding PreguntaActual.OpcionB}" Command="{Binding ResponderCommand}" CommandParameter="2" Background="#334155" Foreground="White" Padding="12" CornerRadius="8" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Cursor="Hand"/>
-                    <Button Content="{Binding PreguntaActual.OpcionC}" Command="{Binding ResponderCommand}" CommandParameter="3" Background="#334155" Foreground="White" Padding="12" CornerRadius="8" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Cursor="Hand"/>
-                    <Button Content="{Binding PreguntaActual.OpcionD}" Command="{Binding ResponderCommand}" CommandParameter="4" Background="#334155" Foreground="White" Padding="12" CornerRadius="8" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Cursor="Hand"/>
+                    <Button Content="{Binding PreguntaActual.OpcionA}" Command="{Binding ResponderCommand}" CommandParameter="1" Background="#334155" Foreground="White" Padding="12" CornerRadius="6" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Cursor="Hand"/>
+                    <Button Content="{Binding PreguntaActual.OpcionB}" Command="{Binding ResponderCommand}" CommandParameter="2" Background="#334155" Foreground="White" Padding="12" CornerRadius="6" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Cursor="Hand"/>
+                    <Button Content="{Binding PreguntaActual.OpcionC}" Command="{Binding ResponderCommand}" CommandParameter="3" Background="#334155" Foreground="White" Padding="12" CornerRadius="6" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Cursor="Hand"/>
+                    <Button Content="{Binding PreguntaActual.OpcionD}" Command="{Binding ResponderCommand}" CommandParameter="4" Background="#334155" Foreground="White" Padding="12" CornerRadius="6" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Cursor="Hand"/>
 
-                    <TextBlock Text="{Binding MensajeResultado}" Foreground="#38BDF8" FontSize="13" TextWrapping="Wrap" HorizontalAlignment="Center" FontWeight="SemiBold"/>
+                    <TextBlock Text="{Binding MensajeResultado}" Foreground="#38BDF8" FontSize="13" TextWrapping="Wrap" HorizontalAlignment="Center" FontWeight="SemiBold" Margin="0,5,0,0"/>
                 </StackPanel>
             </Border>
 
-            <!-- Resumen Final -->
-            <Border Background="#1E293B" CornerRadius="16" Padding="30" HorizontalAlignment="Center" IsVisible="{Binding TriviaFinalizada}">
+            <!-- Panel de Resumen Final -->
+            <Border Background="#1E293B" CornerRadius="12" Padding="30" IsVisible="{Binding MostrarFinal}" HorizontalAlignment="Center">
                 <StackPanel Spacing="20" HorizontalAlignment="Center">
-                    <TextBlock Text="🏆 ¡Trivia Completada!" FontSize="26" FontWeight="Bold" Foreground="#F59E0B" HorizontalAlignment="Center"/>
-                    <TextBlock Text="{Binding Puntaje, StringFormat='Puntaje Final: {0} puntos'}" FontSize="20" Foreground="White" HorizontalAlignment="Center"/>
-                    <Button Content="Volver al Menú Principal" Command="{Binding VolverMenuCommand}" Background="#2563EB" Foreground="White" FontWeight="Bold" Padding="12,8" CornerRadius="8" Cursor="Hand" HorizontalAlignment="Center"/>
+                    <TextBlock Text="🏆 ¡Encuesta Completada!" FontSize="24" FontWeight="Bold" Foreground="#F59E0B" HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding Puntaje, StringFormat='Puntaje Final: {0} puntos'}" FontSize="18" Foreground="White" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Al reingresar se cargará la siguiente encuesta." FontSize="12" Foreground="#94A3B8" HorizontalAlignment="Center"/>
+                    <Button Content="Volver al Menú Principal" Command="{Binding VolverMenuCommand}" Background="#2563EB" Foreground="White" FontWeight="Bold" Padding="12,8" CornerRadius="6" Cursor="Hand" HorizontalAlignment="Center"/>
                 </StackPanel>
             </Border>
+
         </Grid>
     </Grid>
 </UserControl>

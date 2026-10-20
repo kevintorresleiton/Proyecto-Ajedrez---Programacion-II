@@ -1,0 +1,6 @@
+@JaqueAndo.Api_HostAddress = http://localhost:5207
+
+GET {{JaqueAndo.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -30,7 +30,7 @@
                             <DataGridTextColumn Header="ID FIDE" Binding="{Binding IdFide}" Width="100"/>
                             <DataGridTextColumn Header="Sexo" Binding="{Binding Sexo}" Width="60"/>
                             <DataGridCheckBoxColumn Header="Es Socio" Binding="{Binding EsSocio}" Width="80"/>
-                            <DataGridTextColumn Header="Club" Binding="{Binding Club}" Width="*"/>
+                            <DataGridTextColumn Header="Club" Binding="{Binding ClubNombre}" Width="*"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>
@@ -50,8 +50,8 @@
                         <TextBox Text="{Binding IdFideForm}" Padding="8"/>
 
                         <TextBlock Text="Club:" Foreground="White"/>
-                        <TextBox Text="{Binding ClubForm}" Padding="8"/>
-
+                      <ComboBox ItemsSource="{Binding Clubes}" SelectedItem="{Binding ClubSeleccionado}" PlaceholderText="Sin club" HorizontalAlignment="Stretch"/>
+<TextBlock Text="{Binding Mensaje}" Foreground="#38BDF8" FontSize="13" TextWrapping="Wrap" HorizontalAlignment="Center" IsVisible="{Binding Mensaje.Length}"/>
                         <CheckBox Content="Es Socio del Club" IsChecked="{Binding EsSocioForm}" Foreground="White" Margin="0,5"/>
 
                         <StackPanel Spacing="10" Margin="0,10,0,0">

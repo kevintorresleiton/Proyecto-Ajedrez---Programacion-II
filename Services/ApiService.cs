@@ -34,7 +34,14 @@ public class JugadorDto
     [JsonIgnore]
     public string ClubNombre => Club?.Nombre ?? "Libre";
 }
-
+public class RankingItemDto
+{
+    public int Puesto { get; set; }
+    public int UsuarioId { get; set; }
+    public string Nombre { get; set; } = string.Empty;
+    public int MejorPuntaje { get; set; }
+    public int Intentos { get; set; }
+}
 public static class ApiService
 {
     private static readonly HttpClient _http = new()
@@ -151,4 +158,18 @@ public static class ApiService
 
     public static Task<string?> EliminarJugadorAsync(int id) =>
         EnviarAsync(() => _http.DeleteAsync($"api/jugadores/{id}"));
+    // ---------- Ranking ----------
+    public static async Task<(List<RankingItemDto>? Ranking, string? Error)> ObtenerRankingAsync()
+    {
+        try
+        {
+            var resp = await _http.GetAsync("api/resultadostrivia/ranking");
+            if (!resp.IsSuccessStatusCode)
+                return (null, ErrorHttp(resp.StatusCode));
+
+            return (await resp.Content.ReadFromJsonAsync<List<RankingItemDto>>(), null);
+        }
+        catch (HttpRequestException) { return (null, ErrorConexion); }
+        catch (TaskCanceledException) { return (null, ErrorTimeout); }
+    }
 }

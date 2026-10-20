@@ -30,5 +30,7 @@ public partial class MenuPrincipalViewModel : ViewModelBase
     private void IrAEventos() => _mainViewModel.NavigateTo(new EventosApiViewModel(_mainViewModel, UsuarioActual));
 
     [RelayCommand]
+    private void IrARanking() => _mainViewModel.NavigateTo(new RankingViewModel(_mainViewModel, UsuarioActual));
+    [RelayCommand]
     private void CerrarSesion() => _mainViewModel.NavigateTo(new LoginViewModel(_mainViewModel));
 }

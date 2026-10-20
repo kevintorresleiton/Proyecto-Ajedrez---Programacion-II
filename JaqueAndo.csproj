@@ -11,6 +11,13 @@
     <AvaloniaResource Include="Assets\**" />
   </ItemGroup>
 
+  <!-- La API vive en una subcarpeta: el proyecto de escritorio no debe compilarla -->
+  <ItemGroup>
+    <Compile Remove="JaqueAndo.Api\**" />
+    <EmbeddedResource Remove="JaqueAndo.Api\**" />
+    <None Remove="JaqueAndo.Api\**" />
+  </ItemGroup>
+
   <ItemGroup>
     <None Update="Data\Jugadores_Ajedrez_BaseDeDatos.xlsx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

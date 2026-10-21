@@ -1,0 +1,30 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:JaqueAndo.ViewModels"
+             x:Class="JaqueAndo.Views.RankingView"
+             x:DataType="vm:RankingViewModel"
+             Background="#0F172A">
+
+    <Grid RowDefinitions="Auto,*">
+        <Border Grid.Row="0" Background="#1E293B" Padding="20,15">
+            <Grid ColumnDefinitions="Auto,*,Auto">
+                <Button Grid.Column="0" Content="← Volver al Menú" Command="{Binding VolverMenuCommand}" Background="#334155" Foreground="White" CornerRadius="6" Padding="10,6" Cursor="Hand"/>
+                <TextBlock Grid.Column="1" Text="🏆 Ranking de Trivia" FontSize="20" FontWeight="Bold" Foreground="#38BDF8" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Button Grid.Column="2" Content="Actualizar" Command="{Binding CargarRankingCommand}" Background="#2563EB" Foreground="White" CornerRadius="6" Padding="10,6" Cursor="Hand"/>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="1" Margin="40,30" RowDefinitions="Auto,*">
+            <TextBlock Grid.Row="0" Text="{Binding Mensaje}" IsVisible="{Binding HayMensaje}" Foreground="#38BDF8" FontSize="14" HorizontalAlignment="Center" Margin="0,0,0,15"/>
+
+            <DataGrid Grid.Row="1" ItemsSource="{Binding Ranking}" AutoGenerateColumns="False" IsReadOnly="True" GridLinesVisibility="All" Background="#1E293B">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Puesto" Binding="{Binding Puesto}" Width="100"/>
+                    <DataGridTextColumn Header="Jugador" Binding="{Binding Nombre}" Width="*"/>
+                    <DataGridTextColumn Header="Mejor puntaje" Binding="{Binding MejorPuntaje}" Width="150"/>
+                    <DataGridTextColumn Header="Intentos" Binding="{Binding Intentos}" Width="100"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+    </Grid>
+</UserControl>

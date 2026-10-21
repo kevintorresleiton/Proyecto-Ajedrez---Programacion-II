@@ -12,6 +12,9 @@
     <!-- Enrutador central mediante DataTemplates (Navegación MVVM) -->
     <ContentControl Content="{Binding CurrentViewModel}">
         <ContentControl.DataTemplates>
+            <DataTemplate DataType="{x:Type vm:RankingViewModel}">
+    <views:RankingView/>
+</DataTemplate>
             <DataTemplate DataType="{x:Type vm:LoginViewModel}">
                 <views:LoginView/>
             </DataTemplate>

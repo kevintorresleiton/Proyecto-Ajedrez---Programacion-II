@@ -1,7 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using JaqueAndo.Data;
-using System.Linq;
+using JaqueAndo.Services;
+using System.Threading.Tasks;
 
 namespace JaqueAndo.ViewModels;
 
@@ -24,18 +24,15 @@ public partial class LoginViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private void IniciarSesion()
+    private async Task IniciarSesionAsync()
     {
-        using var db = new AppDbContext();
-        var user = db.Usuarios.FirstOrDefault(u => u.Username.ToLower() == Username.Trim().ToLower() && u.Password == Password);
+        ErrorMessage = string.Empty;
 
-        if (user != null)
-        {
-            _mainViewModel.NavigateTo(new MenuPrincipalViewModel(_mainViewModel, user));
-        }
+        var (usuario, error) = await ApiService.LoginAsync(Username.Trim(), Password);
+
+        if (usuario != null)
+            _mainViewModel.NavigateTo(new MenuPrincipalViewModel(_mainViewModel, usuario));
         else
-        {
-            ErrorMessage = "Usuario o contraseña incorrectos.";
-        }
+            ErrorMessage = error ?? "No se pudo iniciar sesión.";
     }
 }

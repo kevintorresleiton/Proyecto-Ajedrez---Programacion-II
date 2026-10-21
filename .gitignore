@@ -3,3 +3,5 @@ obj/
 *.db
 .vs/
 .vscode/
+*.db-shm
+*.db-wal

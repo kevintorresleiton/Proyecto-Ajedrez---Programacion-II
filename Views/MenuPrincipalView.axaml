@@ -29,7 +29,7 @@
                 <StackPanel Spacing="25" MaxWidth="1000">
                     <TextBlock Text="Selecciona un Módulo" FontSize="24" FontWeight="Bold" Foreground="White"/>
 
-                    <UniformGrid Columns="2" Rows="2">
+                    <UniformGrid Columns="2" Rows="3">
                         <!-- Tarjeta 1: Jugar -->
                         <Button Command="{Binding IrAJugarCommand}" Background="#1E293B" CornerRadius="12" Margin="10" Padding="0" Cursor="Hand" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                             <Grid RowDefinitions="*,Auto">
@@ -68,7 +68,7 @@
                                                 <TextBlock Text="Solo Admin" FontSize="10" Foreground="#F59E0B" FontWeight="Bold"/>
                                             </Border>
                                         </StackPanel>
-                                        <TextBlock Text="CRUD completo de jugadores desde SQLite." Foreground="#94A3B8" FontSize="12" TextWrapping="Wrap" Margin="0,4,0,0"/>
+                                        <TextBlock Text="CRUD completo de jugadores a través de la API." Foreground="#94A3B8" FontSize="12" TextWrapping="Wrap" Margin="0,4,0,0"/>
                                     </StackPanel>
                                 </Border>
                             </Grid>
@@ -82,6 +82,19 @@
                                     <StackPanel>
                                         <TextBlock Text="🌐 Consultas API REST" FontSize="18" FontWeight="Bold" Foreground="White"/>
                                         <TextBlock Text="Torneos en vivo y métricas mundiales mediante Lichess." Foreground="#94A3B8" FontSize="12" TextWrapping="Wrap" Margin="0,4,0,0"/>
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+                        </Button>
+
+                                                <!-- Tarjeta 5: Ranking de Trivia -->
+                        <Button Command="{Binding IrARankingCommand}" Background="#1E293B" CornerRadius="12" Margin="10" Padding="0" Cursor="Hand" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                            <Grid RowDefinitions="*,Auto">
+                                <Image Grid.Row="0" Source="avares://JaqueAndo/Assets/ajedrez9_trivia.jpg" Stretch="UniformToFill" Height="140"/>
+                                <Border Grid.Row="1" Padding="15">
+                                    <StackPanel>
+                                        <TextBlock Text="🏆 Ranking de Trivia" FontSize="18" FontWeight="Bold" Foreground="White"/>
+                                        <TextBlock Text="Mejores puntajes de todos los jugadores, desde la API." Foreground="#94A3B8" FontSize="12" TextWrapping="Wrap" Margin="0,4,0,0"/>
                                     </StackPanel>
                                 </Border>
                             </Grid>

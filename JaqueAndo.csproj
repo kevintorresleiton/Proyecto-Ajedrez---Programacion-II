@@ -11,10 +11,11 @@
     <AvaloniaResource Include="Assets\**" />
   </ItemGroup>
 
+  <!-- La API vive en una subcarpeta: el proyecto de escritorio no debe compilarla -->
   <ItemGroup>
-    <None Update="Data\Jugadores_Ajedrez_BaseDeDatos.xlsx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <Compile Remove="JaqueAndo.Api\**" />
+    <EmbeddedResource Remove="JaqueAndo.Api\**" />
+    <None Remove="JaqueAndo.Api\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -25,12 +26,5 @@
     <PackageReference Include="Avalonia.Fonts.Inter" Version="12.1.1" />
     <PackageReference Include="ChessDotNet" Version="1.0.0" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
-    <PackageReference Include="ExcelDataReader" Version="3.9.0" />
-    <PackageReference Include="ExcelDataReader.DataSet" Version="3.9.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.12" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.12">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
   </ItemGroup>
 </Project>

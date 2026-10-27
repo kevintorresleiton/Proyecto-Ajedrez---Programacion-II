@@ -184,7 +184,40 @@ public static class ContenidoTutorial
                 Fen = "k7/5Q2/1K6/8/8/8/8/8 w - - 0 1",
                 MensajeAcierto = "¡Ahogado! El rey negro no está en jaque pero no puede moverse a ninguna casilla. La partida termina en tablas, aunque las blancas tenían mucha ventaja.",
                 MensajeError = "Ese movimiento es válido, pero no deja al rey negro ahogado. Ojo: dar jaque mate también termina la partida, pero acá se busca una jugada que NO dé jaque y le quite todas las casillas."
-            }
+            },
+            // ---------- El enroque ----------
+            new LeccionTutorial
+            {
+                Titulo = "El enroque",
+                Texto = "El enroque es una jugada especial donde se mueven dos piezas a la vez: el rey avanza dos casillas hacia " +
+                        "una torre, y esa torre salta al otro lado del rey. Sirve para poner al rey a salvo. " +
+                        "Solo se puede hacer si el rey y esa torre no se movieron antes, si no hay piezas entre ellos, " +
+                        "si el rey no está en jaque y si no pasa por una casilla atacada. Tocá el rey blanco y mirá las casillas verdes.",
+                Objetivo = "Objetivo: hacé el enroque, corto (hacia la torre de h1) o largo (hacia la torre de a1).",
+                // Rey negro en e8, torres blancas en a1 y h1, rey blanco en e1. "KQ" = las blancas pueden enrocar de ambos lados
+                Fen = "4k3/8/8/8/8/8/8/R3K2R w KQ - 0 1",
+                // El enroque se escribe como la jugada del rey: e1g1 (corto) o e1c1 (largo)
+                MovimientosCorrectos = new List<string> { "e1g1", "e1c1" },
+                MensajeAcierto = "¡Enroque! El rey se movió dos casillas y la torre saltó al otro lado de él. Con el enroque corto el rey queda en g1, y con el largo, en c1.",
+                MensajeError = "Ese movimiento es válido, pero el objetivo es hacer el enroque: mové el rey dos casillas hacia una de las torres. ¡Probá de nuevo!"
+            },                    // <-- coma, porque sigue otra lección
+
+            // ---------- La captura al paso ----------
+            new LeccionTutorial
+            {
+            Titulo = "La captura al paso",
+                Texto = "Es una regla especial de los peones. Si un peón avanza dos casillas desde su posición inicial y queda " +
+                        "al lado de un peón rival, ese rival puede capturarlo como si el peón hubiera avanzado una sola casilla. " +
+                        "Solo se puede hacer en la jugada inmediatamente siguiente. Las negras acaban de jugar el peón de d7 a d5. " +
+                        "Tocá el peón blanco y mirá las casillas verdes.",
+                Objetivo = "Objetivo: capturá al paso el peón negro de d5 con tu peón de e5.",
+                // Rey negro en e8, peón negro en d5, peón blanco en e5, rey blanco en e1.
+                // El "d6" del FEN indica que se puede capturar al paso en esa casilla.
+                Fen = "4k3/8/8/3pP3/8/8/8/4K3 w - d6 0 1",
+                MovimientosCorrectos = new List<string> { "e5d6" },
+                MensajeAcierto = "¡Captura al paso! Tu peón se movió en diagonal a d6, una casilla vacía, y el peón negro de d5 salió del tablero.",
+                MensajeError = "Ese movimiento es válido, pero el objetivo es capturar al paso el peón negro de d5. ¡Probá de nuevo!"
+            }                     // <-- la última NO lleva coma
         };
     }
 }

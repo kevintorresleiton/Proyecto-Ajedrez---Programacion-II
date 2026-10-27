@@ -28,4 +28,7 @@ public class LeccionTutorial
 
     // Mensaje cuando hace una jugada válida pero que no es la que pide la lección
     public string MensajeError { get; set; } = string.Empty;
+
+    // Una lección es informativa si no tiene jugadas correctas: solo se explora, no se juega.
+    public bool EsInformativa => MovimientosCorrectos.Count == 0;
 }

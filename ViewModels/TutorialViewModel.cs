@@ -77,7 +77,15 @@ public partial class TutorialViewModel : ViewModelBase
         TextoProgreso = $"Lección {indice + 1} de {_lecciones.Count}";
 
         CargarPosicion();
-        MostrarMensaje("Tocá una pieza blanca para empezar.", ColorNeutro);
+        // El mensaje inicial depende del tipo de lección
+        if (_leccionActual.EsInformativa)
+        {
+            MostrarMensaje("Esta lección es para explorar. Tocá una pieza blanca para ver a dónde puede moverse.", ColorNeutro);
+        }
+        else
+        {
+            MostrarMensaje("Tocá una pieza blanca para empezar.", ColorNeutro);
+        }
 
         // Avisamos a los botones Anterior / Siguiente que revisen si se pueden usar
         SiguienteLeccionCommand.NotifyCanExecuteChanged();
@@ -155,6 +163,13 @@ public partial class TutorialViewModel : ViewModelBase
     {
         // Si la lección ya terminó, el tablero queda bloqueado
         if (LeccionCompletada) return;
+        
+        // En las lecciones informativas solo se explora: no se hacen movimientos
+        if (_leccionActual.EsInformativa)
+        {
+            ExplorarCasilla(casilla);
+            return;
+        }
 
         Position pos = new Position(casilla.ColumnaChess, casilla.FilaChess);
         Piece? piece = _game.GetPieceAt(pos);
@@ -220,7 +235,26 @@ public partial class TutorialViewModel : ViewModelBase
             MostrarMensaje("Ese movimiento no es posible con esa pieza. Elegí la pieza y mirá las casillas verdes.", ColorError);
         }
     }
+    // Modo exploración (lecciones informativas): al tocar una pieza blanca se muestran
+    // sus jugadas posibles, pero no se mueve nada.
+    private void ExplorarCasilla(CasillaTutorialViewModel casilla)
+    {
+        LimpiarSeleccion();   // borramos lo que se había resaltado antes
 
+        Position pos = new Position(casilla.ColumnaChess, casilla.FilaChess);
+        Piece? piece = _game.GetPieceAt(pos);
+
+        if (piece != null && piece.Owner == _game.WhoseTurn)
+        {
+            casilla.ColorFondo = ColorSeleccion;   // naranja: la pieza que tocó
+            MostrarDestinosValidos(casilla);        // verde: a dónde puede ir
+            MostrarMensaje("Las casillas verdes son las jugadas posibles de esa pieza. Probá con otra.", ColorNeutro);
+        }
+        else
+        {
+            MostrarMensaje("Tocá una pieza blanca para ver sus jugadas.", ColorNeutro);
+        }
+    }
     // Pinta de verde las casillas a las que puede ir la pieza elegida.
     // Probamos las 64 casillas y le preguntamos a ChessDotNet cuáles son válidas.
     private void MostrarDestinosValidos(CasillaTutorialViewModel origen)

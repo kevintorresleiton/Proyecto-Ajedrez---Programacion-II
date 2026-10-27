@@ -17,29 +17,67 @@
         <Border Grid.Row="1" Padding="20">
             <Grid ColumnDefinitions="*,300">
 
-                <!-- Tablero 8x8: una grilla de 64 casillas que se pueden tocar -->
+                <!-- Tablero 8x8 con las letras de las columnas y los números de las filas -->
                 <Border Grid.Column="0" Background="#0F172A" CornerRadius="12" Padding="15" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <ItemsControl ItemsSource="{Binding Tablero}" Width="480" Height="480">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <UniformGrid Rows="8" Columns="8"/>
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                            <!-- Cómo se dibuja cada casilla: un botón con la pieza adentro -->
-                            <DataTemplate x:DataType="vm:CasillaTutorialViewModel">
-                                <Button Command="{Binding $parent[UserControl].((vm:TutorialViewModel)DataContext).SeleccionarCasillaCommand}"
-                                        CommandParameter="{Binding}"
-                                        Background="{Binding ColorFondo}"
-                                        Padding="0" CornerRadius="0"
-                                        HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                                        HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                                        Cursor="Hand">
-                                    <TextBlock Text="{Binding Pieza}" FontSize="36" Foreground="#1E293B"/>
-                                </Button>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
+                    <Grid ColumnDefinitions="22,480" RowDefinitions="480,22">
+
+                        <!-- Estilo común para las letras y los números -->
+                        <Grid.Styles>
+                            <Style Selector="TextBlock.coord">
+                                <Setter Property="Foreground" Value="#94A3B8"/>
+                                <Setter Property="FontSize" Value="13"/>
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                            </Style>
+                        </Grid.Styles>
+
+                        <!-- Números de las filas: 8 arriba, 1 abajo -->
+                        <UniformGrid Grid.Column="0" Grid.Row="0" Rows="8" Columns="1">
+                            <TextBlock Classes="coord" Text="8"/>
+                            <TextBlock Classes="coord" Text="7"/>
+                            <TextBlock Classes="coord" Text="6"/>
+                            <TextBlock Classes="coord" Text="5"/>
+                            <TextBlock Classes="coord" Text="4"/>
+                            <TextBlock Classes="coord" Text="3"/>
+                            <TextBlock Classes="coord" Text="2"/>
+                            <TextBlock Classes="coord" Text="1"/>
+                        </UniformGrid>
+
+                        <!-- El tablero: una grilla de 64 casillas que se pueden tocar -->
+                        <ItemsControl Grid.Column="1" Grid.Row="0" ItemsSource="{Binding Tablero}" Width="480" Height="480">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <UniformGrid Rows="8" Columns="8"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <!-- Cómo se dibuja cada casilla: un botón con la pieza adentro -->
+                                <DataTemplate x:DataType="vm:CasillaTutorialViewModel">
+                                    <Button Command="{Binding $parent[UserControl].((vm:TutorialViewModel)DataContext).SeleccionarCasillaCommand}"
+                                            CommandParameter="{Binding}"
+                                            Background="{Binding ColorFondo}"
+                                            Padding="0" CornerRadius="0"
+                                            HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                            HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                            Cursor="Hand">
+                                        <TextBlock Text="{Binding Pieza}" FontSize="36" Foreground="#1E293B"/>
+                                    </Button>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <!-- Letras de las columnas: de la a a la h -->
+                        <UniformGrid Grid.Column="1" Grid.Row="1" Rows="1" Columns="8">
+                            <TextBlock Classes="coord" Text="a"/>
+                            <TextBlock Classes="coord" Text="b"/>
+                            <TextBlock Classes="coord" Text="c"/>
+                            <TextBlock Classes="coord" Text="d"/>
+                            <TextBlock Classes="coord" Text="e"/>
+                            <TextBlock Classes="coord" Text="f"/>
+                            <TextBlock Classes="coord" Text="g"/>
+                            <TextBlock Classes="coord" Text="h"/>
+                        </UniformGrid>
+                    </Grid>
                 </Border>
 
                 <!-- Panel lateral: lección, objetivo, mensajes y navegación -->

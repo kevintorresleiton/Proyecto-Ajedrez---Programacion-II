@@ -139,6 +139,51 @@ public static class ContenidoTutorial
                 MovimientosCorrectos = new List<string> { "e4d5" },
                 MensajeAcierto = "¡Muy bien! El peón capturó en diagonal: de e4 pasó a d5.",
                 MensajeError = "Ese movimiento es válido, pero el objetivo es capturar el caballo negro de d5 con el peón. ¡Probá de nuevo!"
+            },
+
+            // ---------- El jaque ----------
+            new LeccionTutorial
+            {
+                Titulo = "El jaque",
+                Texto = "Hay jaque cuando una pieza ataca al rey rival. El rey en jaque está obligado a salvarse en su próxima jugada. " +
+                        "Nunca se captura al rey: el objetivo es atacarlo. Tocá la torre blanca y fijate desde qué casilla " +
+                        "podría atacar al rey negro.",
+                Objetivo = "Objetivo: dá jaque al rey negro.",
+                Meta = TipoMeta.Jaque,
+                // Rey negro en e8, torre blanca en a1, rey blanco en e1
+                Fen = "4k3/8/8/8/8/8/8/R3K3 w - - 0 1",
+                MensajeAcierto = "¡Jaque! La torre en a8 ataca al rey negro a lo largo de la fila 8.",
+                MensajeError = "Ese movimiento es válido, pero no da jaque. Buscá una casilla desde la que la torre ataque al rey negro."
+            },
+
+            // ---------- El jaque mate ----------
+            new LeccionTutorial
+            {
+                Titulo = "El jaque mate",
+                Texto = "El jaque mate ocurre cuando el rey está en jaque y no puede evitarlo: no tiene a dónde moverse, " +
+                        "no se puede bloquear el ataque y no se puede capturar a la pieza que lo ataca. " +
+                        "Ahí termina la partida y gana quien dio el mate. Mirá al rey negro: sus propios peones le cierran la salida.",
+                Objetivo = "Objetivo: dá jaque mate en una jugada.",
+                Meta = TipoMeta.JaqueMate,
+                // Rey negro en g8 con peones en f7, g7 y h7, torre blanca en a1, rey blanco en e1
+                Fen = "6k1/5ppp/8/8/8/8/8/R3K3 w - - 0 1",
+                MensajeAcierto = "¡Jaque mate! El rey negro está en jaque y no puede escapar: sus propios peones le cierran el paso y nada puede bloquear la fila 8.",
+                MensajeError = "Ese movimiento es válido, pero no es jaque mate. Buscá un jaque al que el rey negro no pueda responder."
+            },
+
+            // ---------- El rey ahogado ----------
+            new LeccionTutorial
+            {
+                Titulo = "El rey ahogado",
+                Texto = "El rey ahogado es una forma de tablas (empate): al jugador que le toca mover no está en jaque, " +
+                        "pero no tiene ninguna jugada legal. Es un error muy común cuando se está ganando. " +
+                        "Acá las blancas tienen dama y rey contra el rey negro solo en a8, que ya tiene pocas casillas libres.",
+                Objetivo = "Objetivo: dejá al rey negro ahogado, sin darle jaque.",
+                Meta = TipoMeta.Ahogado,
+                // Rey negro en a8, dama blanca en f7, rey blanco en b6
+                Fen = "k7/5Q2/1K6/8/8/8/8/8 w - - 0 1",
+                MensajeAcierto = "¡Ahogado! El rey negro no está en jaque pero no puede moverse a ninguna casilla. La partida termina en tablas, aunque las blancas tenían mucha ventaja.",
+                MensajeError = "Ese movimiento es válido, pero no deja al rey negro ahogado. Ojo: dar jaque mate también termina la partida, pero acá se busca una jugada que NO dé jaque y le quite todas las casillas."
             }
         };
     }

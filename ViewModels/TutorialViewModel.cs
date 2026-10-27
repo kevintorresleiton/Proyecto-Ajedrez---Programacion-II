@@ -215,8 +215,8 @@ public partial class TutorialViewModel : ViewModelBase
             LimpiarSeleccion();
             ActualizarPiezas();
 
-            // ¿Esa jugada está en la lista de jugadas correctas de la lección?
-            if (_leccionActual.MovimientosCorrectos.Contains(jugada))
+            // ¿La jugada cumple el objetivo de la lección? (depende del tipo de meta)
+            if (CumpleObjetivo(jugada))
             {
                 LeccionCompletada = true;
                 MostrarMensaje(_leccionActual.MensajeAcierto, ColorAcierto);
@@ -234,6 +234,59 @@ public partial class TutorialViewModel : ViewModelBase
             LimpiarSeleccion();
             MostrarMensaje("Ese movimiento no es posible con esa pieza. Elegí la pieza y mirá las casillas verdes.", ColorError);
         }
+    }
+    // Decide si lo que hizo el usuario cumple el objetivo de la lección.
+    // Se llama DESPUÉS de hacer la jugada, así que ahora le toca mover a las negras.
+    private bool CumpleObjetivo(string jugada)
+    {
+        // Jugador que tiene que mover ahora (el rival de quien acaba de jugar)
+        Player rival = _game.WhoseTurn;
+
+        switch (_leccionActual.Meta)
+        {
+            case TipoMeta.Jaque:
+                // ¿El rival quedó en jaque?
+                return _game.IsInCheck(rival);
+
+            case TipoMeta.JaqueMate:
+                // ¿El rival quedó en jaque mate?
+                return _game.IsCheckmated(rival);
+
+            case TipoMeta.Ahogado:
+                // Ahogado = NO está en jaque y NO tiene ninguna jugada legal
+                return !_game.IsInCheck(rival) && !TieneJugadasLegales(rival);
+
+            default:
+                // Meta "Jugada": la jugada tiene que estar en la lista de la lección
+                return _leccionActual.MovimientosCorrectos.Contains(jugada);
+        }
+    }
+
+    // Devuelve true si el jugador tiene al menos una jugada legal.
+    // Prueba cada pieza suya contra cada casilla del tablero.
+    private bool TieneJugadasLegales(Player jugador)
+    {
+        foreach (var origen in Tablero)
+        {
+            Position posOrigen = new Position(origen.ColumnaChess, origen.FilaChess);
+            Piece? piece = _game.GetPieceAt(posOrigen);
+
+            // Nos interesan solo las piezas de este jugador
+            if (piece == null || piece.Owner != jugador) continue;
+
+            foreach (var destino in Tablero)
+            {
+                if (destino == origen) continue;   // no se puede quedar en el lugar
+
+                Position posDestino = new Position(destino.ColumnaChess, destino.FilaChess);
+                Move move = new Move(posOrigen, posDestino, jugador);
+
+                // Con encontrar UNA jugada legal ya alcanza
+                if (_game.IsValidMove(move)) return true;
+            }
+        }
+
+        return false;   // ninguna pieza tiene jugadas legales
     }
     // Modo exploración (lecciones informativas): al tocar una pieza blanca se muestran
     // sus jugadas posibles, pero no se mueve nada.

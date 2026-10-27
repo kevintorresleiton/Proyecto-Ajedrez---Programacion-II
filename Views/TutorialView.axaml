@@ -1,0 +1,46 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:JaqueAndo.ViewModels"
+             x:Class="JaqueAndo.Views.TutorialView"
+             x:DataType="vm:TutorialViewModel">
+
+    <Grid RowDefinitions="Auto,*">
+        <!-- Encabezado: botón de volver y título -->
+        <Border Grid.Row="0" Background="#0F172A" Padding="20,15">
+            <Grid ColumnDefinitions="Auto,*,Auto">
+                <Button Grid.Column="0" Content="← Volver al Menú" Command="{Binding VolverMenuCommand}" Background="#334155" Foreground="White" CornerRadius="6" Padding="10,6" Cursor="Hand"/>
+                <TextBlock Grid.Column="1" Text="{Binding Titulo}" FontSize="20" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Grid>
+        </Border>
+
+        <!-- Contenido: el tablero a la izquierda y un panel a la derecha -->
+        <Border Grid.Row="1" Padding="20">
+            <Grid ColumnDefinitions="*,300">
+
+                <!-- Tablero 8x8: una grilla de 64 casillas -->
+                <Border Grid.Column="0" Background="#0F172A" CornerRadius="12" Padding="15" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <ItemsControl ItemsSource="{Binding Tablero}" Width="480" Height="480">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Rows="8" Columns="8"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <!-- Cómo se dibuja cada casilla: un cuadrado con la pieza adentro -->
+                            <DataTemplate x:DataType="vm:CasillaTutorialViewModel">
+                                <Border Background="{Binding ColorFondo}">
+                                    <TextBlock Text="{Binding Pieza}" FontSize="36" Foreground="#1E293B" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Border>
+
+                <!-- Panel lateral: más adelante va a mostrar el texto de cada lección -->
+                <Border Grid.Column="1" Background="#1E293B" CornerRadius="12" Padding="20" Margin="15,0,0,0">
+                    <TextBlock Text="Acá van a ir las explicaciones de cada lección" Foreground="#94A3B8" FontSize="14" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

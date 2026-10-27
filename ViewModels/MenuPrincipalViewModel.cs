@@ -16,6 +16,9 @@ public partial class MenuPrincipalViewModel : ViewModelBase
         _mainViewModel = mainViewModel;
         _usuarioActual = usuario;
     }
+        // Abre la pantalla del tutorial
+    [RelayCommand]
+    private void IrATutorial() => _mainViewModel.NavigateTo(new TutorialViewModel(_mainViewModel, UsuarioActual));
 
     [RelayCommand]
     private void IrAJugar() => _mainViewModel.NavigateTo(new JugarViewModel(_mainViewModel, UsuarioActual));

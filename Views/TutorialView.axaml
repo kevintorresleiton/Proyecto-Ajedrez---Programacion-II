@@ -13,11 +13,11 @@
             </Grid>
         </Border>
 
-        <!-- Contenido: el tablero a la izquierda y un panel a la derecha -->
+        <!-- Contenido: el tablero a la izquierda y el panel de la lección a la derecha -->
         <Border Grid.Row="1" Padding="20">
             <Grid ColumnDefinitions="*,300">
 
-                <!-- Tablero 8x8: una grilla de 64 casillas -->
+                <!-- Tablero 8x8: una grilla de 64 casillas que se pueden tocar -->
                 <Border Grid.Column="0" Background="#0F172A" CornerRadius="12" Padding="15" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <ItemsControl ItemsSource="{Binding Tablero}" Width="480" Height="480">
                         <ItemsControl.ItemsPanel>
@@ -26,19 +26,40 @@
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
-                            <!-- Cómo se dibuja cada casilla: un cuadrado con la pieza adentro -->
+                            <!-- Cómo se dibuja cada casilla: un botón con la pieza adentro -->
                             <DataTemplate x:DataType="vm:CasillaTutorialViewModel">
-                                <Border Background="{Binding ColorFondo}">
-                                    <TextBlock Text="{Binding Pieza}" FontSize="36" Foreground="#1E293B" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </Border>
+                                <Button Command="{Binding $parent[UserControl].((vm:TutorialViewModel)DataContext).SeleccionarCasillaCommand}"
+                                        CommandParameter="{Binding}"
+                                        Background="{Binding ColorFondo}"
+                                        Padding="0" CornerRadius="0"
+                                        HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                        HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                        Cursor="Hand">
+                                    <TextBlock Text="{Binding Pieza}" FontSize="36" Foreground="#1E293B"/>
+                                </Button>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </Border>
 
-                <!-- Panel lateral: más adelante va a mostrar el texto de cada lección -->
+                <!-- Panel lateral: texto de la lección, objetivo y mensajes -->
                 <Border Grid.Column="1" Background="#1E293B" CornerRadius="12" Padding="20" Margin="15,0,0,0">
-                    <TextBlock Text="Acá van a ir las explicaciones de cada lección" Foreground="#94A3B8" FontSize="14" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <StackPanel Spacing="14">
+                        <TextBlock Text="{Binding TituloLeccion}" FontSize="18" FontWeight="Bold" Foreground="White" TextWrapping="Wrap"/>
+                        <TextBlock Text="{Binding TextoLeccion}" FontSize="13" Foreground="#CBD5E1" TextWrapping="Wrap"/>
+
+                        <!-- Objetivo de la lección -->
+                        <Border Background="#0F172A" Padding="12" CornerRadius="8">
+                            <TextBlock Text="{Binding Objetivo}" FontSize="13" FontWeight="SemiBold" Foreground="#38BDF8" TextWrapping="Wrap"/>
+                        </Border>
+
+                        <!-- Mensaje de respuesta (el color cambia según acierto o error) -->
+                        <Border Background="#334155" Padding="12" CornerRadius="8">
+                            <TextBlock Text="{Binding Mensaje}" FontSize="13" FontWeight="Bold" Foreground="{Binding ColorMensaje}" TextWrapping="Wrap"/>
+                        </Border>
+
+                        <Button Content="↺ Reiniciar lección" Command="{Binding ReiniciarLeccionCommand}" Background="#2563EB" Foreground="White" FontWeight="Bold" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Padding="10" CornerRadius="6" Cursor="Hand"/>
+                    </StackPanel>
                 </Border>
             </Grid>
         </Border>

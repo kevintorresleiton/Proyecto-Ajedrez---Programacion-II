@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using ChessDotNet;          // Librería de ajedrez: conoce las reglas y las piezas
 using ChessDotNet.Pieces;
@@ -7,7 +8,7 @@ using JaqueAndo.Models;
 
 namespace JaqueAndo.ViewModels;
 
-// ViewModel de la pantalla del tutorial.
+// ViewModel de la pantalla del tutorial. Es el "motor": sabe recorrer cualquier lección.
 public partial class TutorialViewModel : ViewModelBase
 {
     // ---------- Colores que usamos ----------
@@ -16,13 +17,6 @@ public partial class TutorialViewModel : ViewModelBase
     private const string ColorError = "#F87171";      // rojo: movimiento incorrecto
     private const string ColorSeleccion = "#F59E0B";  // naranja: pieza elegida
     private const string ColorDestino = "#86EFAC";    // verde claro: a dónde puede ir
-
-    // ---------- Datos de la lección 1 (en el paso 5 los movemos a una clase aparte) ----------
-    // Posición inicial en formato FEN: rey negro en e8, peón blanco en e2, rey blanco en e1
-    private const string FenLeccion = "4k3/8/8/8/8/8/4P3/4K3 w - - 0 1";
-    // Casilla que hay que alcanzar: e4
-    private const File MetaColumna = File.E;
-    private const int MetaFila = 4;
 
     // Referencia al ViewModel principal: la necesitamos para cambiar de pantalla
     private readonly MainViewModel _mainViewModel;
@@ -33,21 +27,27 @@ public partial class TutorialViewModel : ViewModelBase
     // Casilla de la pieza que el usuario tocó primero (null = todavía no eligió ninguna)
     private CasillaTutorialViewModel? _casillaOrigen = null;
 
+    // Todas las lecciones (vienen de ContenidoTutorial)
+    private readonly List<LeccionTutorial> _lecciones = ContenidoTutorial.ObtenerLecciones();
+
+    // Número de la lección actual (0 = la primera) y la lección en sí
+    private int _indiceLeccion = 0;
+    private LeccionTutorial _leccionActual = new LeccionTutorial();
+
     // Usuario que inició sesión (se pasa de pantalla en pantalla)
     [ObservableProperty] private Usuario _usuarioActual;
 
     // Título de la pantalla
     [ObservableProperty] private string _titulo = "Tutorial de Ajedrez";
 
-    // Textos del panel lateral
-    [ObservableProperty] private string _tituloLeccion = "Lección 1: El peón";
-    [ObservableProperty] private string _textoLeccion =
-        "El peón avanza hacia adelante, nunca hacia atrás. Normalmente se mueve una casilla, " +
-        "pero en su primer movimiento puede avanzar una o dos. Tocá el peón blanco para ver a dónde puede ir.";
-    [ObservableProperty] private string _objetivo = "Objetivo: llevá el peón de e2 a e4.";
+    // Textos del panel lateral (se completan al cargar cada lección)
+    [ObservableProperty] private string _textoProgreso = string.Empty;   // "Lección 1 de 2"
+    [ObservableProperty] private string _tituloLeccion = string.Empty;
+    [ObservableProperty] private string _textoLeccion = string.Empty;
+    [ObservableProperty] private string _objetivo = string.Empty;
 
     // Mensaje de respuesta al usuario (acierto, error o ayuda) y su color
-    [ObservableProperty] private string _mensaje = "Tocá el peón blanco para empezar.";
+    [ObservableProperty] private string _mensaje = string.Empty;
     [ObservableProperty] private string _colorMensaje = ColorNeutro;
 
     // true cuando el usuario ya cumplió el objetivo (se bloquea el tablero)
@@ -61,13 +61,33 @@ public partial class TutorialViewModel : ViewModelBase
         _mainViewModel = mainViewModel;
         _usuarioActual = usuario;
 
-        CargarPosicion();
+        CargarLeccion(0);   // empezamos por la primera lección
     }
 
-    // Arma el tablero a partir del FEN de la lección
+    // Carga la lección número "indice": textos, tablero y mensaje inicial
+    private void CargarLeccion(int indice)
+    {
+        _indiceLeccion = indice;
+        _leccionActual = _lecciones[indice];
+
+        // Pasamos los datos de la lección al panel
+        TituloLeccion = _leccionActual.Titulo;
+        TextoLeccion = _leccionActual.Texto;
+        Objetivo = _leccionActual.Objetivo;
+        TextoProgreso = $"Lección {indice + 1} de {_lecciones.Count}";
+
+        CargarPosicion();
+        MostrarMensaje("Tocá una pieza blanca para empezar.", ColorNeutro);
+
+        // Avisamos a los botones Anterior / Siguiente que revisen si se pueden usar
+        SiguienteLeccionCommand.NotifyCanExecuteChanged();
+        LeccionAnteriorCommand.NotifyCanExecuteChanged();
+    }
+
+    // Arma el tablero a partir del FEN de la lección actual
     private void CargarPosicion()
     {
-        _game = new ChessGame(FenLeccion);   // partida con la posición de la lección
+        _game = new ChessGame(_leccionActual.Fen);   // partida con la posición de la lección
         _casillaOrigen = null;
         LeccionCompletada = false;
         Tablero.Clear();
@@ -123,6 +143,12 @@ public partial class TutorialViewModel : ViewModelBase
         };
     }
 
+    // Devuelve el nombre de una casilla en notación de ajedrez, por ejemplo "e4"
+    private string NombreCasilla(CasillaTutorialViewModel casilla)
+    {
+        return casilla.ColumnaChess.ToString().ToLower() + casilla.FilaChess;
+    }
+
     // Se ejecuta cada vez que el usuario toca una casilla
     [RelayCommand]
     private void SeleccionarCasilla(CasillaTutorialViewModel casilla)
@@ -165,22 +191,26 @@ public partial class TutorialViewModel : ViewModelBase
 
         if (_game.IsValidMove(move))
         {
+            // Armamos el nombre de la jugada, por ejemplo "e2e4" (origen + destino).
+            // Lo hacemos ANTES de limpiar la selección, porque ahí se borra el origen.
+            string jugada = NombreCasilla(_casillaOrigen) + NombreCasilla(casilla);
+
             // El movimiento es legal: lo hacemos en la partida y actualizamos las piezas
             _game.MakeMove(move, true);
             LimpiarSeleccion();
             ActualizarPiezas();
 
-            // ¿Llegó a la casilla objetivo?
-            if (casilla.ColumnaChess == MetaColumna && casilla.FilaChess == MetaFila)
+            // ¿Esa jugada está en la lista de jugadas correctas de la lección?
+            if (_leccionActual.MovimientosCorrectos.Contains(jugada))
             {
                 LeccionCompletada = true;
-                MostrarMensaje("¡Muy bien! En su primer movimiento el peón avanzó dos casillas hasta e4.", ColorAcierto);
+                MostrarMensaje(_leccionActual.MensajeAcierto, ColorAcierto);
             }
             else
             {
-                // Movimiento válido, pero no es el objetivo: reiniciamos para que pueda reintentar
+                // Movimiento válido, pero no es el que pide la lección: reiniciamos para reintentar
                 CargarPosicion();
-                MostrarMensaje("Ese movimiento es válido, pero en esta lección el objetivo es llevar el peón a e4. ¡Probá de nuevo!", ColorError);
+                MostrarMensaje(_leccionActual.MensajeError, ColorError);
             }
         }
         else
@@ -238,13 +268,23 @@ public partial class TutorialViewModel : ViewModelBase
         ColorMensaje = color;
     }
 
-    // Botón "Reiniciar lección": vuelve a la posición inicial
+    // ¿Hay una lección después de la actual? (para habilitar el botón "Siguiente")
+    private bool HaySiguiente() => _indiceLeccion < _lecciones.Count - 1;
+
+    // ¿Hay una lección antes de la actual? (para habilitar el botón "Anterior")
+    private bool HayAnterior() => _indiceLeccion > 0;
+
+    // Botón "Siguiente →"
+    [RelayCommand(CanExecute = nameof(HaySiguiente))]
+    private void SiguienteLeccion() => CargarLeccion(_indiceLeccion + 1);
+
+    // Botón "← Anterior"
+    [RelayCommand(CanExecute = nameof(HayAnterior))]
+    private void LeccionAnterior() => CargarLeccion(_indiceLeccion - 1);
+
+    // Botón "Reiniciar lección": vuelve a cargar la lección actual desde cero
     [RelayCommand]
-    private void ReiniciarLeccion()
-    {
-        CargarPosicion();
-        MostrarMensaje("Tocá el peón blanco para empezar.", ColorNeutro);
-    }
+    private void ReiniciarLeccion() => CargarLeccion(_indiceLeccion);
 
     // Botón "Volver al Menú": navega de nuevo al menú principal
     [RelayCommand]

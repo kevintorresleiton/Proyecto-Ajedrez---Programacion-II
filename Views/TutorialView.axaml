@@ -42,24 +42,35 @@
                     </ItemsControl>
                 </Border>
 
-                <!-- Panel lateral: texto de la lección, objetivo y mensajes -->
+                <!-- Panel lateral: lección, objetivo, mensajes y navegación -->
                 <Border Grid.Column="1" Background="#1E293B" CornerRadius="12" Padding="20" Margin="15,0,0,0">
-                    <StackPanel Spacing="14">
-                        <TextBlock Text="{Binding TituloLeccion}" FontSize="18" FontWeight="Bold" Foreground="White" TextWrapping="Wrap"/>
-                        <TextBlock Text="{Binding TextoLeccion}" FontSize="13" Foreground="#CBD5E1" TextWrapping="Wrap"/>
+                    <ScrollViewer>
+                        <StackPanel Spacing="14">
+                            <!-- Contador: "Lección 1 de 2" -->
+                            <TextBlock Text="{Binding TextoProgreso}" FontSize="12" Foreground="#94A3B8"/>
 
-                        <!-- Objetivo de la lección -->
-                        <Border Background="#0F172A" Padding="12" CornerRadius="8">
-                            <TextBlock Text="{Binding Objetivo}" FontSize="13" FontWeight="SemiBold" Foreground="#38BDF8" TextWrapping="Wrap"/>
-                        </Border>
+                            <TextBlock Text="{Binding TituloLeccion}" FontSize="18" FontWeight="Bold" Foreground="White" TextWrapping="Wrap"/>
+                            <TextBlock Text="{Binding TextoLeccion}" FontSize="13" Foreground="#CBD5E1" TextWrapping="Wrap"/>
 
-                        <!-- Mensaje de respuesta (el color cambia según acierto o error) -->
-                        <Border Background="#334155" Padding="12" CornerRadius="8">
-                            <TextBlock Text="{Binding Mensaje}" FontSize="13" FontWeight="Bold" Foreground="{Binding ColorMensaje}" TextWrapping="Wrap"/>
-                        </Border>
+                            <!-- Objetivo de la lección -->
+                            <Border Background="#0F172A" Padding="12" CornerRadius="8">
+                                <TextBlock Text="{Binding Objetivo}" FontSize="13" FontWeight="SemiBold" Foreground="#38BDF8" TextWrapping="Wrap"/>
+                            </Border>
 
-                        <Button Content="↺ Reiniciar lección" Command="{Binding ReiniciarLeccionCommand}" Background="#2563EB" Foreground="White" FontWeight="Bold" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Padding="10" CornerRadius="6" Cursor="Hand"/>
-                    </StackPanel>
+                            <!-- Mensaje de respuesta (el color cambia según acierto o error) -->
+                            <Border Background="#334155" Padding="12" CornerRadius="8">
+                                <TextBlock Text="{Binding Mensaje}" FontSize="13" FontWeight="Bold" Foreground="{Binding ColorMensaje}" TextWrapping="Wrap"/>
+                            </Border>
+
+                            <Button Content="↺ Reiniciar lección" Command="{Binding ReiniciarLeccionCommand}" Background="#2563EB" Foreground="White" FontWeight="Bold" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Padding="10" CornerRadius="6" Cursor="Hand"/>
+
+                            <!-- Navegación entre lecciones -->
+                            <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                                <Button Grid.Column="0" Content="← Anterior" Command="{Binding LeccionAnteriorCommand}" Background="#334155" Foreground="White" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Padding="10" CornerRadius="6" Cursor="Hand"/>
+                                <Button Grid.Column="1" Content="Siguiente →" Command="{Binding SiguienteLeccionCommand}" Background="#334155" Foreground="White" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Padding="10" CornerRadius="6" Cursor="Hand"/>
+                            </Grid>
+                        </StackPanel>
+                    </ScrollViewer>
                 </Border>
             </Grid>
         </Border>

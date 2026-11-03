@@ -99,6 +99,18 @@
                                 </Border>
                             </Grid>
                         </Button>
+                                                <!-- Tarjeta 6: Tutorial -->
+                        <Button Command="{Binding IrATutorialCommand}" Background="#1E293B" CornerRadius="12" Margin="10" Padding="0" Cursor="Hand" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                            <Grid RowDefinitions="*,Auto">
+                                <Image Grid.Row="0" Source="avares://JaqueAndo/Assets/ajedrez5_jugar.jpg" Stretch="UniformToFill" Height="140"/>
+                                <Border Grid.Row="1" Padding="15">
+                                    <StackPanel>
+                                        <TextBlock Text="🎓 Tutorial de Ajedrez" FontSize="18" FontWeight="Bold" Foreground="White"/>
+                                        <TextBlock Text="Aprendé a jugar paso a paso: piezas, jaque y jugadas especiales." Foreground="#94A3B8" FontSize="12" TextWrapping="Wrap" Margin="0,4,0,0"/>
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+                        </Button>
                     </UniformGrid>
                 </StackPanel>
             </Border>

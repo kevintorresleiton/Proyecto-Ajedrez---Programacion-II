@@ -1,0 +1,125 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:JaqueAndo.ViewModels"
+             x:Class="JaqueAndo.Views.TutorialView"
+             x:DataType="vm:TutorialViewModel">
+
+    <Grid RowDefinitions="Auto,*">
+        <!-- Encabezado: botón de volver y título -->
+        <Border Grid.Row="0" Background="#0F172A" Padding="20,15">
+            <Grid ColumnDefinitions="Auto,*,Auto">
+                <Button Grid.Column="0" Content="← Volver al Menú" Command="{Binding VolverMenuCommand}" Background="#334155" Foreground="White" CornerRadius="6" Padding="10,6" Cursor="Hand"/>
+                <TextBlock Grid.Column="1" Text="{Binding Titulo}" FontSize="20" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Grid>
+        </Border>
+
+        <!-- Contenido: el tablero a la izquierda y el panel de la lección a la derecha -->
+        <Border Grid.Row="1" Padding="20">
+            <Grid ColumnDefinitions="*,300">
+
+                <!-- Tablero 8x8 con las letras de las columnas y los números de las filas -->
+                <!-- El fondo del marco es la imagen de la tarjeta del tutorial -->
+                <Border Grid.Column="0" CornerRadius="12" Padding="14" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Border.Background>
+                        <ImageBrush Source="avares://JaqueAndo/Assets/ajedrez5_jugar.jpg" Stretch="UniformToFill"/>
+                    </Border.Background>
+
+                    <!-- Capa negra semitransparente: permite leer las letras y los números sobre la foto -->
+                    <Border Background="#B3000000" CornerRadius="8" Padding="6">
+                        <Grid ColumnDefinitions="22,480" RowDefinitions="480,22">
+
+                            <!-- Estilo común para las letras y los números -->
+                            <Grid.Styles>
+                                <Style Selector="TextBlock.coord">
+                                    <Setter Property="Foreground" Value="#E2E8F0"/>
+                                    <Setter Property="FontSize" Value="13"/>
+                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                </Style>
+                            </Grid.Styles>
+
+                            <!-- Números de las filas: 8 arriba, 1 abajo -->
+                            <UniformGrid Grid.Column="0" Grid.Row="0" Rows="8" Columns="1">
+                                <TextBlock Classes="coord" Text="8"/>
+                                <TextBlock Classes="coord" Text="7"/>
+                                <TextBlock Classes="coord" Text="6"/>
+                                <TextBlock Classes="coord" Text="5"/>
+                                <TextBlock Classes="coord" Text="4"/>
+                                <TextBlock Classes="coord" Text="3"/>
+                                <TextBlock Classes="coord" Text="2"/>
+                                <TextBlock Classes="coord" Text="1"/>
+                            </UniformGrid>
+
+                            <!-- El tablero: una grilla de 64 casillas que se pueden tocar -->
+                            <ItemsControl Grid.Column="1" Grid.Row="0" ItemsSource="{Binding Tablero}" Width="480" Height="480">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <UniformGrid Rows="8" Columns="8"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <!-- Cómo se dibuja cada casilla: un botón con la pieza adentro -->
+                                    <DataTemplate x:DataType="vm:CasillaTutorialViewModel">
+                                        <Button Command="{Binding $parent[UserControl].((vm:TutorialViewModel)DataContext).SeleccionarCasillaCommand}"
+                                                CommandParameter="{Binding}"
+                                                Background="{Binding ColorFondo}"
+                                                Padding="0" CornerRadius="0"
+                                                HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                                HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                                Cursor="Hand">
+                                            <TextBlock Text="{Binding Pieza}" FontSize="36" Foreground="#1E293B"/>
+                                        </Button>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+
+                            <!-- Letras de las columnas: de la A a la H (en mayúscula) -->
+                            <UniformGrid Grid.Column="1" Grid.Row="1" Rows="1" Columns="8">
+                                <TextBlock Classes="coord" Text="A"/>
+                                <TextBlock Classes="coord" Text="B"/>
+                                <TextBlock Classes="coord" Text="C"/>
+                                <TextBlock Classes="coord" Text="D"/>
+                                <TextBlock Classes="coord" Text="E"/>
+                                <TextBlock Classes="coord" Text="F"/>
+                                <TextBlock Classes="coord" Text="G"/>
+                                <TextBlock Classes="coord" Text="H"/>
+                            </UniformGrid>
+                        </Grid>
+                    </Border>
+                </Border>
+
+                <!-- Panel lateral: lección, objetivo, mensajes y navegación -->
+                <Border Grid.Column="1" Background="#1E293B" CornerRadius="12" Padding="20" Margin="15,0,0,0">
+                    <ScrollViewer>
+                        <StackPanel Spacing="14">
+                            <!-- Contador: "Lección 1 de 15" -->
+                            <TextBlock Text="{Binding TextoProgreso}" FontSize="12" Foreground="#94A3B8"/>
+
+                            <TextBlock Text="{Binding TituloLeccion}" FontSize="18" FontWeight="Bold" Foreground="White" TextWrapping="Wrap"/>
+                            <TextBlock Text="{Binding TextoLeccion}" FontSize="13" Foreground="#CBD5E1" TextWrapping="Wrap"/>
+
+                            <!-- Objetivo de la lección -->
+                            <Border Background="#0F172A" Padding="12" CornerRadius="8">
+                                <TextBlock Text="{Binding Objetivo}" FontSize="13" FontWeight="SemiBold" Foreground="#38BDF8" TextWrapping="Wrap"/>
+                            </Border>
+
+                            <!-- Mensaje de respuesta (el color cambia según acierto o error) -->
+                            <Border Background="#334155" Padding="12" CornerRadius="8">
+                                <TextBlock Text="{Binding Mensaje}" FontSize="13" FontWeight="Bold" Foreground="{Binding ColorMensaje}" TextWrapping="Wrap"/>
+                            </Border>
+
+                            <Button Content="↺ Reiniciar lección" Command="{Binding ReiniciarLeccionCommand}" Background="#2563EB" Foreground="White" FontWeight="Bold" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Padding="10" CornerRadius="6" Cursor="Hand"/>
+
+                            <!-- Navegación entre lecciones -->
+                            <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                                <Button Grid.Column="0" Content="← Anterior" Command="{Binding LeccionAnteriorCommand}" Background="#334155" Foreground="White" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Padding="10" CornerRadius="6" Cursor="Hand"/>
+                                <Button Grid.Column="1" Content="Siguiente →" Command="{Binding SiguienteLeccionCommand}" Background="#334155" Foreground="White" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Padding="10" CornerRadius="6" Cursor="Hand"/>
+                            </Grid>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Border>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

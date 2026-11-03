@@ -157,13 +157,13 @@ public partial class TutorialViewModel : ViewModelBase
         return casilla.ColumnaChess.ToString().ToLower() + casilla.FilaChess;
     }
 
-    // Se ejecuta cada vez que el usuario toca una casilla
+        // Se ejecuta cada vez que el usuario toca una casilla
     [RelayCommand]
     private void SeleccionarCasilla(CasillaTutorialViewModel casilla)
     {
         // Si la lección ya terminó, el tablero queda bloqueado
         if (LeccionCompletada) return;
-        
+
         // En las lecciones informativas solo se explora: no se hacen movimientos
         if (_leccionActual.EsInformativa)
         {
@@ -171,6 +171,7 @@ public partial class TutorialViewModel : ViewModelBase
             return;
         }
 
+        // Posición de la casilla tocada y pieza que hay en ella (null si está vacía)
         Position pos = new Position(casilla.ColumnaChess, casilla.FilaChess);
         Piece? piece = _game.GetPieceAt(pos);
 
@@ -201,8 +202,8 @@ public partial class TutorialViewModel : ViewModelBase
             return;
         }
 
-        Position posOrigen = new Position(_casillaOrigen.ColumnaChess, _casillaOrigen.FilaChess);
-        Move move = new Move(posOrigen, pos, _game.WhoseTurn);
+        // Creamos la jugada (si es una coronación, el método agrega la letra de la pieza)
+        Move move = CrearMovimiento(_casillaOrigen, casilla);
 
         if (_game.IsValidMove(move))
         {
@@ -278,8 +279,7 @@ public partial class TutorialViewModel : ViewModelBase
             {
                 if (destino == origen) continue;   // no se puede quedar en el lugar
 
-                Position posDestino = new Position(destino.ColumnaChess, destino.FilaChess);
-                Move move = new Move(posOrigen, posDestino, jugador);
+                Move move = CrearMovimiento(origen, destino);
 
                 // Con encontrar UNA jugada legal ya alcanza
                 if (_game.IsValidMove(move)) return true;
@@ -308,18 +308,40 @@ public partial class TutorialViewModel : ViewModelBase
             MostrarMensaje("Tocá una pieza blanca para ver sus jugadas.", ColorNeutro);
         }
     }
+    // Crea una jugada de "origen" a "destino".
+    // Si es un peón que llega a la última fila, agrega la 'Q' para que se corone en dama.
+    private Move CrearMovimiento(CasillaTutorialViewModel origen, CasillaTutorialViewModel destino)
+    {
+        Position posOrigen = new Position(origen.ColumnaChess, origen.FilaChess);
+        Position posDestino = new Position(destino.ColumnaChess, destino.FilaChess);
+        Piece? piece = _game.GetPieceAt(posOrigen);
+
+        // ¿Es un peón?
+        if (piece is Pawn)
+        {
+            // Las blancas se coronan en la fila 8 y las negras en la fila 1
+            bool blancasLlegan = piece.Owner == Player.White && destino.FilaChess == 8;
+            bool negrasLlegan = piece.Owner == Player.Black && destino.FilaChess == 1;
+
+            if (blancasLlegan || negrasLlegan)
+            {
+                // 'Q' = dama (Queen)
+                return new Move(posOrigen, posDestino, piece.Owner, 'Q');
+            }
+        }
+
+        // Cualquier otra jugada: sin letra de coronación
+        return new Move(posOrigen, posDestino, _game.WhoseTurn);
+    }
     // Pinta de verde las casillas a las que puede ir la pieza elegida.
     // Probamos las 64 casillas y le preguntamos a ChessDotNet cuáles son válidas.
     private void MostrarDestinosValidos(CasillaTutorialViewModel origen)
     {
-        Position posOrigen = new Position(origen.ColumnaChess, origen.FilaChess);
-
         foreach (var casilla in Tablero)
         {
             if (casilla == origen) continue;   // la casilla de origen no cuenta
 
-            Position posDestino = new Position(casilla.ColumnaChess, casilla.FilaChess);
-            Move move = new Move(posOrigen, posDestino, _game.WhoseTurn);
+            Move move = CrearMovimiento(origen, casilla);
 
             if (_game.IsValidMove(move))
             {

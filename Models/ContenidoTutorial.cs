@@ -217,6 +217,22 @@ public static class ContenidoTutorial
                 MovimientosCorrectos = new List<string> { "e5d6" },
                 MensajeAcierto = "¡Captura al paso! Tu peón se movió en diagonal a d6, una casilla vacía, y el peón negro de d5 salió del tablero.",
                 MensajeError = "Ese movimiento es válido, pero el objetivo es capturar al paso el peón negro de d5. ¡Probá de nuevo!"
+            },
+            
+                        // ---------- La promoción ----------
+            new LeccionTutorial
+            {
+                Titulo = "La promoción",
+                Texto = "Cuando un peón llega a la última fila del tablero se corona: se cambia por otra pieza " +
+                        "(dama, torre, alfil o caballo, a elección del jugador). Casi siempre se elige la dama, " +
+                        "que es la pieza más poderosa. En este tutorial el peón se corona automáticamente en dama. " +
+                        "Tocá el peón blanco y mirá a dónde puede ir.",
+                Objetivo = "Objetivo: llevá el peón de e7 a e8 para coronarlo.",
+                // Peón blanco en e7, rey negro en a6, rey blanco en e1
+                Fen = "8/4P3/k7/8/8/8/8/4K3 w - - 0 1",
+                MovimientosCorrectos = new List<string> { "e7e8" },
+                MensajeAcierto = "¡Coronación! El peón llegó a e8 y se convirtió en una dama. Un peón es la pieza más débil, pero puede llegar a ser la más poderosa.",
+                MensajeError = "Ese movimiento es válido, pero el objetivo es llevar el peón de e7 a e8 para coronarlo. ¡Probá de nuevo!"
             }                     // <-- la última NO lleva coma
         };
     }
